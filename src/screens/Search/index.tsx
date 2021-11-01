@@ -2,8 +2,11 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react'
 import { View, Text, StyleSheet, Dimensions, TextInput } from 'react-native'
 
-//I'm using Dimensions instead useWindowDimensions hook because I need to call these screen propeties outside a functional component
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+//This API is used to fetch the location which the user is typing
+
 const { width, height } = Dimensions.get("screen");
+//I'm using Dimensions instead useWindowDimensions hook because I need to call these screen propeties outside a functional component
 
 export default function Search({navigation}: any) {
     
@@ -12,7 +15,39 @@ export default function Search({navigation}: any) {
             <Text style={styles.city}>Adicionar Localização</Text>
 
             <View style={styles.searchView}>
-                <TextInput style={styles.input} placeholder="Pesquise a Cidade..." />
+                <GooglePlacesAutocomplete
+                    placeholder='Pesquise a Cidade...'
+                    styles={{
+                        container: {
+                            width:width/1.2,
+                            height: height/15
+                        },
+                        textInput: {
+                            borderTopLeftRadius:20,
+                            borderTopRightRadius:20,
+                            margin: 12,
+                            padding: 10,
+                            backgroundColor:'#fff',
+                            color:'#121212',
+                            fontSize: 18,
+                            fontWeight:'bold'
+                        },
+                        listView: {
+                            width:width/1.2,
+                            height:100,
+                            borderRadius: 20
+                        }
+                    }}
+                    onPress={(data, details = null) => {
+                        // 'details' is provided when fetchDetails = true
+                        console.log(data, details);
+                    }}
+                    query={{
+                        key: 'AIzaSyApBdPKSS-jOkBatAwVUspBMJ6aTmYogBA',
+                        language: 'pt-BR',
+                    }}
+                    fetchDetails={true}
+                />
                 <View style={styles.searchedCities}>
                     <Text style={{color:'white', fontWeight:'bold', fontSize:15}}>Maceió, </Text>
                     <Text style={{color:'white', fontSize:15}}>Alagoas</Text>
@@ -37,7 +72,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         margin: 20,
         paddingVertical:20,
-        backgroundColor:'#261C2C',
+        backgroundColor:'#121212',
         borderRadius: 30
     },
     city: {
