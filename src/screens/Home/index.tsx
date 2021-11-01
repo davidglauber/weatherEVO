@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect } from 'react'
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity, FlatList } from 'react-native'
 import { Feather } from '@expo/vector-icons';
 import LottieView from 'lottie-react-native';
 import notFound from '../../components/atoms/LottieAnimations/notfound.json';
@@ -13,7 +13,7 @@ const { width, height } = Dimensions.get("screen");
 
 export default function Home({navigation}: any) {
     const { globalArrayCities } = React.useContext(DataContext);
-    
+
     useEffect(() => {
         console.log('CONTEXT VAR VALUE: ' + JSON.stringify(globalArrayCities))
     }, [])
@@ -33,18 +33,26 @@ export default function Home({navigation}: any) {
                     <Text style={styles.subtitle}>Tente adicionar uma cidade clicando na seta do topo para buscá-la</Text>
                 </View>
             :
-                <View style={styles.citiesWeather}>
-                    <View style={{flexDirection:'row'}}>
-                        <View style={{flexDirection:'column'}}>
-                            <Text style={{color:'black', fontSize:20, fontWeight:"bold", marginRight: width/3}}>Blumenau</Text>
-                            <Text style={{color:'black', fontSize:14, marginRight: width/3}}>Brasil</Text>
-                            <Text style={{marginTop:20, color:'#5772FF'}}>Chuva Fraca</Text>
-                            <Text style={{marginTop:10, color:'black'}}>14° - 24°</Text>
+                <FlatList 
+                    data={globalArrayCities}
+                    keyExtractor={item => item.id}
+                    renderItem={(item: any) => (
+                        <View style={styles.citiesWeather}>
+                            <View style={{flexDirection:'row'}}>
+                                <View style={{flexDirection:'column'}}>
+                                    <Text style={{color:'black', fontSize:20, fontWeight:"bold", marginRight: width/3}}>Blumenau</Text>
+                                    <Text style={{color:'black', fontSize:14, marginRight: width/3}}>Brasil</Text>
+                                    <Text style={{marginTop:25, color:'#5772FF'}}>Chuva Fraca</Text>
+                                    <View style={{flexDirection:"row"}}>
+                                        <Text style={{marginTop:5, color:'black'}}>14° - 24°</Text>
+                                        <Feather style={{left: width/1.9}} name="star" size={24}/>
+                                    </View>
+                                </View>
+                                <Text style={styles.temperature}>29°</Text>
+                            </View>
                         </View>
-                        <Text style={styles.temperature}>29°</Text>
-                    </View>
-                    <Feather style={{marginRight: width/16}} name="star" size={24}/>
-                </View>
+                    )}
+                />
             }
             <StatusBar translucent={true}/>
         </View>
