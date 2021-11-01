@@ -16,7 +16,7 @@ const { width, height } = Dimensions.get("screen");
 
 export default function Search({navigation}: any) {
     const [ cities, setCities ] = useState<any | undefined>([]);
-    const { setGlobalArrayCities } = React.useContext(DataContext);
+    const { globalArrayCities, setGlobalArrayCities } = React.useContext(DataContext);
 
     useEffect(() => {
         if(cities.length >=5) {
@@ -27,7 +27,7 @@ export default function Search({navigation}: any) {
     }, [cities])
 
     function handleSaveCities() {
-        setGlobalArrayCities(cities)
+        setGlobalArrayCities([...globalArrayCities, ...cities])
         navigation.navigate('Home')
     }
 
