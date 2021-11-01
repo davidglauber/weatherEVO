@@ -34,14 +34,14 @@ export default function Home({navigation}: any) {
                     keyExtractor={item => item.id}
                     renderItem={(item: any) => (
                         <View style={styles.citiesWeather}>
-                            <View style={{flexDirection:'row'}}>
-                                <View style={{flexDirection:'column'}}>
-                                    <Text style={{color:'black', fontSize:20, fontWeight:"bold", marginRight: width/3}}>{item.item.city}</Text>
-                                    <Text style={{color:'black', fontSize:14, marginRight: width/3}}>{item.item.stateOfCity}</Text>
-                                    <Text style={{marginTop:25, color:'#5772FF'}}>Chuva Fraca</Text>
+                            <View style={{flex:1, flexDirection:'row'}}>
+                                <View style={{flex:1, flexDirection:'column'}}>
+                                    <Text style={{color:'black', fontSize:20, fontWeight:"bold", position:"absolute", left: width/13}}>{item.item.city}</Text>
+                                    <Text style={{color:'black', fontSize:14, position:'absolute', left: width/13, top: height/28}}>{item.item.stateOfCity}</Text>
+                                    <Text style={{position:'absolute', left: width/13, top: height/11, color:'#5772FF'}}>Chuva Fraca</Text>
                                     <View style={{flexDirection:"row"}}>
-                                        <Text style={{marginTop:5, color:'black'}}>14° - 24°</Text>
-                                        <Feather style={{left: width/1.9}} name="star" size={24}/>
+                                        <Text style={{position:'absolute', left: width/13, top: height/9, color:'black'}}>14° - 24°</Text>
+                                        <Feather style={{position:'absolute', right: width/12, top: height/9.9}} name="star" size={24}/>
                                     </View>
                                 </View>
                                 <Text style={styles.temperature}>29°</Text>
@@ -74,9 +74,11 @@ const styles = StyleSheet.create({
     },
     citiesWeather: {
         width: width/1.14,
+        maxWidth: width/1.14,
         height: height/5,
+        maxHeight: height/5,
         alignItems: 'flex-end',
-        margin: 20,
+        margin: 15,
         paddingVertical:30,
         backgroundColor:'#F9F7F5',
         borderRadius: 30
@@ -100,7 +102,8 @@ const styles = StyleSheet.create({
     },
     temperature: {
         fontSize: 49,
-        marginRight:20,
+        position:'absolute',
+        right: width/13,
         color:'black',
         fontWeight: 'bold'
     },
