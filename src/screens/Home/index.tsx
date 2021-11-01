@@ -15,7 +15,7 @@ export default function Home({navigation}: any) {
     const { globalArrayCities, setGlobalArrayCities } = React.useContext(DataContext);
 
     useEffect(() => {
-            console.log('WEATHEEEEEEEERR: '+ JSON.stringify(globalArrayCities))
+            console.log('WEATHEEEEEEEERR: '+ JSON.stringify(globalArrayCities[0].weather.weather[0].description))
     }, [])
 
     return (
@@ -41,13 +41,13 @@ export default function Home({navigation}: any) {
                                 <View style={{flex:1, flexDirection:'column'}}>
                                     <Text style={{color:'black', fontSize:20, fontWeight:"bold", position:"absolute", left: width/13}}>{item.item.city}</Text>
                                     <Text style={{color:'black', fontSize:14, position:'absolute', left: width/13, top: height/28}}>{item.item.stateOfCity}</Text>
-                                    <Text style={{position:'absolute', left: width/13, top: height/11, color:'#5772FF'}}>Chuva Fraca</Text>
+                                    <Text style={{position:'absolute', left: width/13, top: height/11, color:'#5772FF'}}>{item.item.weather.main.description}</Text>
                                     <View style={{flexDirection:"row"}}>
-                                        <Text style={{position:'absolute', left: width/13, top: height/9, color:'black'}}>14° - 24°</Text>
+                                        <Text style={{position:'absolute', left: width/13, top: height/9, color:'black'}}>{item.item.weather.main.temp_min}° - {item.item.weather.main.temp_max}°</Text>
                                         <Feather style={{position:'absolute', right: width/12, top: height/9.9}} name="star" size={24}/>
                                     </View>
                                 </View>
-                                <Text style={styles.temperature}>29°</Text>
+                                <Text style={styles.temperature}>{Math.round((item.item.weather.main.temp))}°</Text>
                             </View>
                         </View>
                     )}

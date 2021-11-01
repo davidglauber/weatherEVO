@@ -66,8 +66,6 @@ export default function Search({navigation}: any) {
                             id: data.place_id,
                             city: details?.address_components[1].long_name || details?.address_components[0].long_name, //Usually, the position 0 and 1 has the same city, so I did it as a precaution
                             stateOfCity: details?.address_components[2].long_name,
-                            latitude: details?.geometry.location.lat,
-                            longitude: details?.geometry.location.lng,
                             weather: res
                         }])
                     })
