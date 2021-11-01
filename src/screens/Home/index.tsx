@@ -12,18 +12,10 @@ import { DataContext } from '../../stores/providers';
 const { width, height } = Dimensions.get("screen");
 
 export default function Home({navigation}: any) {
-    const { globalArrayCities } = React.useContext(DataContext);
+    const { globalArrayCities, setGlobalArrayCities } = React.useContext(DataContext);
 
     useEffect(() => {
-        if(globalArrayCities.length == 0) {
-            return undefined
-        } else {
-            globalArrayCities.map((item: any) => {
-                fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${item.latitude}&lon=${item.longitude}&appid=bdc4cc287ad8459dd3d505378c906116`).then(js => js.json()).then(res => {
-                    console.log('REQ DEU CERTO: '+ JSON.stringify(res))
-                })
-            })
-        }
+            console.log('WEATHEEEEEEEERR: '+ JSON.stringify(globalArrayCities))
     }, [])
 
     return (

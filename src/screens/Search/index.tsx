@@ -61,13 +61,16 @@ export default function Search({navigation}: any) {
                         }
                     }}
                     onPress={(data, details = null) => {
+                        fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${details?.geometry.location.lat}&lon=${details?.geometry.location.lng}&units=metric&lang=pt_br&appid=bdc4cc287ad8459dd3d505378c906116`).then(js => js.json()).then(res => {
                         setCities([...cities, {
                             id: data.place_id,
                             city: details?.address_components[1].long_name || details?.address_components[0].long_name, //Usually, the position 0 and 1 has the same city, so I did it as a precaution
                             stateOfCity: details?.address_components[2].long_name,
                             latitude: details?.geometry.location.lat,
-                            longitude: details?.geometry.location.lng
+                            longitude: details?.geometry.location.lng,
+                            weather: res
                         }])
+                    })
                         console.log(JSON.stringify(cities));
                     }}
                     query={{
