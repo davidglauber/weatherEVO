@@ -21,7 +21,7 @@ export default function Home() {
             <View style={styles.mainView}>
                 <LottieView style={{height: 300, width:300}} source={notFound} autoPlay={true}/>
                 <Text style={styles.title}>Parece que você ainda não adicionou uma cidade</Text>
-                <Text style={styles.subtitle}>Tente adicionar uma cidade clicando na seta para buscá-la</Text>
+                <Text style={styles.subtitle}>Tente adicionar uma cidade clicando na seta do topo para buscá-la</Text>
             </View>
             <StatusBar translucent={true}/>
         </View>
