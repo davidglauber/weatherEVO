@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react'
-import { View, Text, StyleSheet, Dimensions, TextInput } from 'react-native'
+import React, { useState } from 'react'
+import { View, Text, StyleSheet, Dimensions, FlatList } from 'react-native'
 
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 //This API is used to fetch the location which the user is typing
@@ -8,8 +8,10 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 const { width, height } = Dimensions.get("screen");
 //I'm using Dimensions instead useWindowDimensions hook because I need to call these screen propeties outside a functional component
 
+
 export default function Search({navigation}: any) {
-    
+    const [ cities, setCities ] = useState<any | undefined>([]);
+
     return (
         <View style={styles.container}>
             <Text style={styles.city}>Adicionar Localização</Text>
@@ -19,12 +21,11 @@ export default function Search({navigation}: any) {
                     placeholder='Pesquise a Cidade...'
                     styles={{
                         container: {
+                            flex:1,
                             width:width/1.2,
-                            height: height/15
                         },
                         textInput: {
-                            borderTopLeftRadius:20,
-                            borderTopRightRadius:20,
+                            borderRadius:20,
                             margin: 12,
                             padding: 10,
                             backgroundColor:'#fff',
@@ -39,8 +40,14 @@ export default function Search({navigation}: any) {
                         }
                     }}
                     onPress={(data, details = null) => {
-                        // 'details' is provided when fetchDetails = true
-                        console.log(data, details);
+                        setCities([...cities, {
+                            id: data.place_id,
+                            city: details?.address_components[1].long_name,
+                            stateOfCity: details?.address_components[2].long_name,
+                            latitude: details?.geometry.location.lat,
+                            longitude: details?.geometry.location.lng
+                        }])
+                        console.log(JSON.stringify(cities));
                     }}
                     query={{
                         key: 'AIzaSyApBdPKSS-jOkBatAwVUspBMJ6aTmYogBA',
@@ -48,11 +55,14 @@ export default function Search({navigation}: any) {
                     }}
                     fetchDetails={true}
                 />
-                <View style={styles.searchedCities}>
-                    <Text style={{color:'white', fontWeight:'bold', fontSize:15}}>Maceió, </Text>
-                    <Text style={{color:'white', fontSize:15}}>Alagoas</Text>
-                    <Text style={{color:'white', fontWeight:'bold', fontSize:24, position:'absolute', left: width/1.4}}>24°</Text>
-                </View>
+
+                {cities.map((item:any) => (
+                    <View style={styles.searchedCities} key={item.id}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:15, marginLeft:100}}>{item.city}, </Text>
+                        <Text style={{color:'white', fontSize:15}}>{item.stateOfCity}</Text>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:24, marginLeft:30}}>24°</Text>
+                    </View>
+                ))}
             </View>
             <StatusBar translucent={true}/>
         </View>
@@ -67,12 +77,12 @@ const styles = StyleSheet.create({
       paddingTop: width/8
     },
     searchView: {
-        width: width,
-        height: height,
+        width: width/1.1,
+        height: height/1.14,
         alignItems: 'center',
         margin: 20,
         paddingVertical:20,
-        backgroundColor:'#121212',
+        backgroundColor:'grey',
         borderRadius: 30
     },
     city: {
@@ -80,13 +90,10 @@ const styles = StyleSheet.create({
         fontSize:18
     },
     searchedCities: {
-        flex:1,
-        alignItems:'center',
-        marginRight: width/1.8,
-        marginTop: 30,
         flexDirection:"row",
-        maxHeight: height/15,
-        maxWidth: width/1.2,
+        justifyContent:'center',
+        marginRight: width/1.8,
+        width: width
     },
     input: {
         height: height/15,
@@ -99,5 +106,5 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight:'bold'
     }
-  });
+});
   
