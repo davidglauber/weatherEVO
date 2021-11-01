@@ -14,11 +14,22 @@ const { width, height } = Dimensions.get("screen");
 export default function Home({navigation}: any) {
     const { globalArrayCities } = React.useContext(DataContext);
 
+    useEffect(() => {
+        if(globalArrayCities.length == 0) {
+            return undefined
+        } else {
+            globalArrayCities.map((item: any) => {
+                fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${item.latitude}&lon=${item.longitude}&appid=bdc4cc287ad8459dd3d505378c906116`).then(js => js.json()).then(res => {
+                    console.log('REQ DEU CERTO: '+ JSON.stringify(res))
+                })
+            })
+        }
+    }, [])
+
     return (
         <View style={styles.container}>
             <TouchableOpacity style={styles.header} onPress={() => navigation.navigate('Search')}>
-                <Text style={styles.city}>Maceió, </Text>
-                <Text style={styles.country}>Brasil</Text>
+                <Text style={styles.city}>Pesquisar </Text>
                 <Feather name="chevron-down" size={20} style={styles.iconArrow}/>
             </TouchableOpacity>
 
@@ -78,7 +89,7 @@ const styles = StyleSheet.create({
         height: height/5,
         maxHeight: height/5,
         alignItems: 'flex-end',
-        margin: 15,
+        margin: 20,
         paddingVertical:30,
         backgroundColor:'#F9F7F5',
         borderRadius: 30
