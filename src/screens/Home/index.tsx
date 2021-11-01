@@ -1,15 +1,23 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native'
 import { Feather } from '@expo/vector-icons';
 import LottieView from 'lottie-react-native';
 import notFound from '../../components/atoms/LottieAnimations/notfound.json';
 
+import { DataContext } from '../../stores/providers';
+//This is the Context to get Global Variables
+
 //I'm using Dimensions instead useWindowDimensions hook because I need to call these screen propeties outside a functional component
 const { width, height } = Dimensions.get("screen");
 
 export default function Home({navigation}: any) {
+    const { globalArrayCities } = React.useContext(DataContext);
     
+    useEffect(() => {
+        console.log('CONTEXT VAR VALUE: ' + JSON.stringify(globalArrayCities))
+    }, [])
+
     return (
         <View style={styles.container}>
             <TouchableOpacity style={styles.header} onPress={() => navigation.navigate('Search')}>
