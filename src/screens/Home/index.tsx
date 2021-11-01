@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react'
-import { View, Text, StyleSheet, Dimensions } from 'react-native'
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native'
 import { Feather } from '@expo/vector-icons';
 import LottieView from 'lottie-react-native';
 import notFound from '../../components/atoms/LottieAnimations/notfound.json';
@@ -8,15 +8,15 @@ import notFound from '../../components/atoms/LottieAnimations/notfound.json';
 //I'm using Dimensions instead useWindowDimensions hook because I need to call these screen propeties outside a functional component
 const { width, height } = Dimensions.get("screen");
 
-export default function Home() {
+export default function Home({navigation}: any) {
     
     return (
         <View style={styles.container}>
-            <View style={styles.header}>
+            <TouchableOpacity style={styles.header} onPress={() => navigation.navigate('Search')}>
                 <Text style={styles.city}>Maceió, </Text>
                 <Text style={styles.country}>Brasil</Text>
                 <Feather name="chevron-down" size={20} style={styles.iconArrow}/>
-            </View>
+            </TouchableOpacity>
 
             <View style={styles.mainView}>
                 <LottieView style={{height: 300, width:300}} source={notFound} autoPlay={true}/>
