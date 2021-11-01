@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, Dimensions, TouchableOpacity, FlatList } from 'react-native'
 import { Feather } from '@expo/vector-icons';
 import LottieView from 'lottie-react-native';
@@ -13,10 +13,6 @@ const { width, height } = Dimensions.get("screen");
 
 export default function Home({navigation}: any) {
     const { globalArrayCities } = React.useContext(DataContext);
-
-    useEffect(() => {
-        console.log('CONTEXT VAR VALUE: ' + JSON.stringify(globalArrayCities))
-    }, [])
 
     return (
         <View style={styles.container}>
@@ -40,8 +36,8 @@ export default function Home({navigation}: any) {
                         <View style={styles.citiesWeather}>
                             <View style={{flexDirection:'row'}}>
                                 <View style={{flexDirection:'column'}}>
-                                    <Text style={{color:'black', fontSize:20, fontWeight:"bold", marginRight: width/3}}>Blumenau</Text>
-                                    <Text style={{color:'black', fontSize:14, marginRight: width/3}}>Brasil</Text>
+                                    <Text style={{color:'black', fontSize:20, fontWeight:"bold", marginRight: width/3}}>{item.item.city}</Text>
+                                    <Text style={{color:'black', fontSize:14, marginRight: width/3}}>{item.item.stateOfCity}</Text>
                                     <Text style={{marginTop:25, color:'#5772FF'}}>Chuva Fraca</Text>
                                     <View style={{flexDirection:"row"}}>
                                         <Text style={{marginTop:5, color:'black'}}>14° - 24°</Text>
