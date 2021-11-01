@@ -19,8 +19,8 @@ export default function Home() {
             </View>
 
             <View style={styles.mainView}>
-                <Text style={styles.title}>Parece que você ainda não adicionou uma cidade</Text>
                 <LottieView style={{height: 300, width:300}} source={notFound} autoPlay={true}/>
+                <Text style={styles.title}>Parece que você ainda não adicionou uma cidade</Text>
                 <Text style={styles.subtitle}>Tente adicionar uma cidade clicando na seta para buscá-la</Text>
             </View>
             <StatusBar translucent={true}/>
@@ -40,8 +40,8 @@ const styles = StyleSheet.create({
     },
     mainView: {
       alignItems: 'center',
-      marginVertical: 10,
-      paddingVertical:30,
+      margin: 20,
+      paddingVertical:20,
       backgroundColor:'#F9F7F5',
       borderRadius: 30
     },
