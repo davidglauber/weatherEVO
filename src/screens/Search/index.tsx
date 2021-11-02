@@ -19,12 +19,14 @@ export default function Search({navigation}: any) {
     const { globalArrayCities, setGlobalArrayCities } = React.useContext(DataContext);
 
     useEffect(() => {
-        if(cities.length >=5) {
+        if(cities.length >= 15) {
             alert('Você só pode adicionar até 5 locais por vez')
         } else {
             return undefined;
         }
     }, [cities])
+
+
 
     function handleSaveCities() {
         setGlobalArrayCities([...globalArrayCities, ...cities])
@@ -66,6 +68,8 @@ export default function Search({navigation}: any) {
                             id: data.place_id,
                             city: details?.address_components[1].long_name || details?.address_components[0].long_name, //Usually, the position 0 and 1 has the same city, so I did it as a precaution
                             stateOfCity: details?.address_components[2].long_name,
+                            latitude: details?.geometry.location.lat,
+                            longitude: details?.geometry.location.lng,
                             weather: res,
                             favorite: false
                         }])
@@ -90,6 +94,9 @@ export default function Search({navigation}: any) {
                     <View style={styles.searchedCities} key={item.id}>
                         <Text style={{color:'white', fontWeight:'bold', fontSize:15}}>{item.city}, </Text>
                         <Text style={{color:'white', fontSize:15}}>{item.stateOfCity}</Text>
+                        <TouchableOpacity style={{position:"absolute", right: width/18}}>
+                            <Feather style={{color:"white"}} name="trash-2" size={20}/>
+                        </TouchableOpacity>
                     </View>
                 ))}
             </View>
@@ -107,7 +114,7 @@ const styles = StyleSheet.create({
     },
     searchView: {
         width: width/1.1,
-        height: height/2,
+        height: height/1.2,
         alignItems: 'center',
         margin: 20,
         paddingVertical:20,

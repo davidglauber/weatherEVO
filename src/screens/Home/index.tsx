@@ -6,9 +6,7 @@ import LottieView from 'lottie-react-native';
 import notFound from '../../components/atoms/LottieAnimations/notfound.json';
 
 import { DataContext } from '../../stores/providers';
-//This is the Context to get Global Variables
 
-//I'm using Dimensions instead useWindowDimensions hook because I need to call these screen propeties outside a functional component
 const { width, height } = Dimensions.get("screen");
 
 export default function Home({navigation}: any) {
@@ -54,26 +52,30 @@ export default function Home({navigation}: any) {
                     data={globalArrayCities}
                     keyExtractor={item => item.id}
                     renderItem={(item: any) => (
-                        <View style={styles.citiesWeather}>
-                            <View style={{flex:1, flexDirection:'row'}}>
-                                <View style={{flex:1, flexDirection:'column'}}>
-                                    <Text style={{color:'black', fontSize:20, fontWeight:"bold", position:"absolute", left: width/13}}>{item.item.city}</Text>
-                                    <Text style={{color:'black', fontSize:14, position:'absolute', left: width/13, top: height/28}}>{item.item.stateOfCity}</Text>
-                                    <Text style={{position:'absolute', left: width/13, top: height/11, color:'#5772FF', textTransform: "capitalize"}}>{item.item.weather.weather[0].description}</Text>
-                                    <View style={{flexDirection:"row"}}>
-                                        <Text style={{position:'absolute', left: width/13, top: height/9, color:'black'}}>{item.item.weather.main.temp_min}° - {item.item.weather.main.temp_max}°</Text>
-                                        <TouchableOpacity style={{flex:1, position:'absolute', right: width/12, top: height/9.9}} onPress={() => [reload(globalArrayCities.indexOf(item.item), item.item.favorite), item.item.favorite = !item.item.favorite]}>
-                                            {item.item.favorite == false ?
-                                                <Feather style={{color: "black"}} name="star" size={24}/>
-                                                :
-                                                <Feather style={{color: "#e3c007"}} name="star" size={24}/>
-                                            }
-                                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate('City', {
+                            cityInfo: item
+                        })}>
+                            <View style={styles.citiesWeather}>
+                                <View style={{flex:1, flexDirection:'row'}}>
+                                    <View style={{flex:1, flexDirection:'column'}}>
+                                        <Text style={{color:'black', fontSize:20, fontWeight:"bold", position:"absolute", left: width/13}}>{item.item.city}</Text>
+                                        <Text style={{color:'black', fontSize:14, position:'absolute', left: width/13, top: height/28}}>{item.item.stateOfCity}</Text>
+                                        <Text style={{position:'absolute', left: width/13, top: height/11, color:'#5772FF', textTransform: "capitalize"}}>{item.item.weather.weather[0].description}</Text>
+                                        <View style={{flexDirection:"row"}}>
+                                            <Text style={{position:'absolute', left: width/13, top: height/9, color:'black'}}>{item.item.weather.main.temp_min}° - {item.item.weather.main.temp_max}°</Text>
+                                            <TouchableOpacity style={{flex:1, position:'absolute', right: width/12, top: height/9.9}} onPress={() => [reload(globalArrayCities.indexOf(item.item), item.item.favorite), item.item.favorite = !item.item.favorite]}>
+                                                {item.item.favorite == false ?
+                                                    <Feather style={{color: "black"}} name="star" size={24}/>
+                                                    :
+                                                    <Feather style={{color: "#e3c007"}} name="star" size={24}/>
+                                                }
+                                            </TouchableOpacity>
+                                        </View>
                                     </View>
+                                    <Text style={styles.temperature}>{Math.round((item.item.weather.main.temp))}°</Text>
                                 </View>
-                                <Text style={styles.temperature}>{Math.round((item.item.weather.main.temp))}°</Text>
                             </View>
-                        </View>
+                        </TouchableOpacity>
                     )}
                 />
             }
@@ -109,7 +111,7 @@ const styles = StyleSheet.create({
         paddingVertical:30,
         backgroundColor:'#F9F7F5',
         borderRadius: 30
-      },
+    },
     city: {
         fontWeight:'bold',
         fontSize:18
