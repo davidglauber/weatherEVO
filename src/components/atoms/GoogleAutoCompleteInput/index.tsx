@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dimensions, Text, TouchableOpacity, View, StyleSheet } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { Feather } from '@expo/vector-icons';
@@ -11,11 +11,20 @@ export default function GoogleAutoCompleteInput(props: any) {
     const [ cities, setCities ] = useState<any | undefined>([]);
     const { globalArrayCities, setGlobalArrayCities } = React.useContext(DataContext);
 
+    useEffect(() => {
+        if(cities.length >= 15) {
+            alert('Você só pode adicionar até 5 locais por vez')
+        } else {
+            return undefined;
+        }
+    }, [cities])
+
+    
     function handleSaveCities() {
         setGlobalArrayCities([...globalArrayCities, ...cities])
         props.nav.navigate('Home')
     }
-    
+
     return(
         <View style={styles.searchView}>
                 <GooglePlacesAutocomplete

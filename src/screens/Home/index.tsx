@@ -16,6 +16,7 @@ export default function Home({navigation}: any) {
                 <Text style={styles.city}>Pesquisar </Text>
                 <Feather name="chevron-down" size={20} style={styles.iconArrow}/>
             </TouchableOpacity>
+            
             <ListCities citiesContext={globalArrayCities} nav={navigation}/>
             <StatusBar translucent={true}/>
         </View>
