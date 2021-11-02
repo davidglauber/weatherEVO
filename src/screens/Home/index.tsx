@@ -53,7 +53,8 @@ export default function Home({navigation}: any) {
                     keyExtractor={item => item.id}
                     renderItem={(item: any) => (
                         <TouchableOpacity onPress={() => navigation.navigate('City', {
-                            cityInfo: item
+                            cityInfo: item,
+                            stateCity: item.item.stateOfCity 
                         })}>
                             <View style={styles.citiesWeather}>
                                 <View style={{flex:1, flexDirection:'row'}}>

@@ -1,45 +1,60 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useEffect } from 'react'
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity, FlatList } from 'react-native'
 import { Feather } from '@expo/vector-icons';
+import { DataContext } from '../../stores/providers';
 
 const { width, height } = Dimensions.get("screen");
 //I'm using Dimensions instead useWindowDimensions hook because I need to call these screen propeties outside a functional component
 
 
 export default function City({navigation, route}: any) {
+    const { globalArrayCities, setGlobalArrayCities } = React.useContext(DataContext);
+    const [ weeklyWeather, setWeeklyWeather ] = useState<any | undefined>([]);
 
     useEffect(() => {
         const { cityInfo } = route.params;
         //This constant get all the city information
-
-
-        console.log('CITY PARAMS: ' + JSON.stringify(cityInfo))
+        async function fetchAPI() {
+            await fetch(`http://api.openweathermap.org/data/2.5/forecast?lat=${cityInfo.item.latitude}&lon=${cityInfo.item.longitude}&units=metric&lang=pt_br&cnt=7&appid=bdc4cc287ad8459dd3d505378c906116`).then(js => js.json()).then(res => {
+                console.log('\n\n\nGET FORECAST: ' + JSON.stringify(res))
+    
+                setWeeklyWeather(res.list)
+                console.log('\n\n\nCITY PARAMS: ' + JSON.stringify(weeklyWeather))
+            })
+        }
+        fetchAPI();
     },[])
 
     return (
         <View style={styles.container}>
             <TouchableOpacity style={styles.header} onPress={() => navigation.goBack()}>
                 <Feather name="chevron-left" size={20} style={styles.iconArrow}/>
-                <Text style={styles.city}>Previsão para os próximos 5 dias</Text>
+                <Text style={styles.city}>Previsão para os próximos 7 dias</Text>
             </TouchableOpacity>
 
-            <Text style={styles.cityTitle}>Alagoas</Text>
+            <Text style={styles.cityTitle}>{route.params.stateCity}</Text>
 
-            <View style={styles.citiesWeather}>
-                <View style={{flex:1, flexDirection:'row'}}>
-                    <View style={{flex:1, flexDirection:'column'}}>
-                        <Text style={{color:'black', fontSize:20, fontWeight:"bold", position:"absolute", left: width/13}}>Maceió</Text>
-                        <Text style={{color:'black', fontSize:14, position:'absolute', left: width/13, top: height/28}}>Alagoas</Text>
-                        <Text style={{position:'absolute', left: width/13, top: height/11, color:'#5772FF', textTransform: "capitalize"}}>Chuva Forte</Text>
-                        
-                        <View style={{flexDirection:"row"}}>
-                            <Text style={{position:'absolute', left: width/13, top: height/9, color:'black'}}>20° - 25°</Text>
+
+            <FlatList 
+                data={weeklyWeather}
+                keyExtractor={item => item.id}
+                renderItem={(item: any) => (
+                    <View style={styles.citiesWeather}>
+                        <View style={{flex:1, flexDirection:'row'}}>
+                            <View style={{flex:1, flexDirection:'column'}}>
+                                <Text style={{color:'black', fontSize:24, fontWeight:"bold", position:"absolute", left: width/13}}>Hoje</Text>
+                                <Text style={{color:'black', fontSize:14, position:'absolute', left: width/13, top: height/28}}>5 de Julho</Text>
+                                <Text style={{position:'absolute', left: width/13, top: height/11, color:'#5772FF', textTransform: "capitalize"}}>{item.item.weather[0].description}</Text>
+                                
+                                <View style={{flexDirection:"row"}}>
+                                    <Text style={{position:'absolute', left: width/13, top: height/9, color:'black'}}>{item.item.main.temp_min}° - {item.item.main.temp_max}°</Text>
+                                </View>
+                            </View>
+                            <Text style={styles.temperature}>{Math.round((item.item.main.temp))}°</Text>
                         </View>
                     </View>
-                    <Text style={styles.temperature}>27°</Text>
-                </View>
-            </View>
+                )}/>
             <StatusBar translucent={true}/>
         </View>
     )
