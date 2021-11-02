@@ -2,33 +2,25 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, Dimensions, TouchableOpacity, FlatList } from 'react-native'
 import { Feather } from '@expo/vector-icons';
-import { DataContext } from '../../stores/providers';
+
 
 const { width, height } = Dimensions.get("screen");
 //I'm using Dimensions instead useWindowDimensions hook because I need to call these screen propeties outside a functional component
 
-
 export default function City({navigation, route}: any) {
-    const { globalArrayCities, setGlobalArrayCities } = React.useContext(DataContext);
     const [ weeklyWeather, setWeeklyWeather ] = useState<any | undefined>([]);
 
     useEffect(() => {
         const { cityInfo } = route.params;
         //This constant get all the city information
+
         async function fetchAPI() {
             await fetch(`http://api.openweathermap.org/data/2.5/forecast?lat=${cityInfo.item.latitude}&lon=${cityInfo.item.longitude}&units=metric&lang=pt_br&appid=bdc4cc287ad8459dd3d505378c906116`).then(js => js.json()).then(res => {
                 var array7Days = [];
-                console.log('\n\n\nGET FORECAST: ' + JSON.stringify(res))
-                
 
                 for(var x = 0; x < res.list.length; x+=8) {
                     array7Days.push(res.list[x])
-
                     setWeeklyWeather(array7Days)
-
-                    console.log('VALOR DO ARRAY DO FOR: ' + JSON.stringify(array7Days))
-                    console.log('VALOR DO FORRRRR: ' + x)
-                    console.log('\n\n\nCITY PARAMS: ' + JSON.stringify(res.list[x]))
                 }
             })
         }

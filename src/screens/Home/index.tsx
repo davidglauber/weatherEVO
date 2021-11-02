@@ -33,6 +33,10 @@ export default function Home({navigation}: any) {
         }
     }
 
+    function deleteCity(indexCurrentElement: number) {
+        globalArrayCities.splice(indexCurrentElement, 1)
+        setRefreshPage(!refreshPage)
+    }
 
     return (
         <View style={styles.container}>
@@ -64,12 +68,16 @@ export default function Home({navigation}: any) {
                                         <Text style={{position:'absolute', left: width/13, top: height/11, color:'#5772FF', textTransform: "capitalize"}}>{item.item.weather.weather[0].description}</Text>
                                         <View style={{flexDirection:"row"}}>
                                             <Text style={{position:'absolute', left: width/13, top: height/9, color:'black'}}>{item.item.weather.main.temp_min}° - {item.item.weather.main.temp_max}°</Text>
-                                            <TouchableOpacity style={{flex:1, position:'absolute', right: width/12, top: height/9.9}} onPress={() => [reload(globalArrayCities.indexOf(item.item), item.item.favorite), item.item.favorite = !item.item.favorite]}>
+                                            <TouchableOpacity style={{flex:1, position:'absolute', right: width/5, top: height/9.9}} onPress={() => [reload(globalArrayCities.indexOf(item.item), item.item.favorite), item.item.favorite = !item.item.favorite]}>
                                                 {item.item.favorite == false ?
-                                                    <Feather style={{color: "black"}} name="star" size={24}/>
+                                                    <Feather style={{color: "black"}} name="star" size={28}/>
                                                     :
-                                                    <Feather style={{color: "#e3c007"}} name="star" size={24}/>
+                                                    <Feather style={{color: "#e3c007"}} name="star" size={28}/>
                                                 }
+                                            </TouchableOpacity>
+                                            
+                                            <TouchableOpacity style={{flex:1, position:'absolute', right: width/12, top: height/9.9}} onPress={() => deleteCity(globalArrayCities.indexOf(item.item))}>
+                                                <Feather style={{color: "black"}} name="trash-2" size={28}/>
                                             </TouchableOpacity>
                                         </View>
                                     </View>
