@@ -4,6 +4,9 @@ import { Dimensions, FlatList, StatusBar, StyleSheet, Text, View } from "react-n
 const { width, height } = Dimensions.get("screen");
 //I'm using Dimensions instead useWindowDimensions hook because I need to call these screen propeties outside a functional component
 
+import { API_KEY } from "@env"
+//It is importing the apiKey
+
 export default function ForeCastCity(props: any) {
     const [ weeklyWeather, setWeeklyWeather ] = useState<any | undefined>([]);
 
@@ -12,7 +15,7 @@ export default function ForeCastCity(props: any) {
         //This constant get all the city information
 
         async function fetchAPI() {
-            await fetch(`http://api.openweathermap.org/data/2.5/forecast?lat=${cityInfo.item.latitude}&lon=${cityInfo.item.longitude}&units=metric&lang=pt_br&appid=bdc4cc287ad8459dd3d505378c906116`).then(js => js.json()).then(res => {
+            await fetch(`http://api.openweathermap.org/data/2.5/forecast?lat=${cityInfo.item.latitude}&lon=${cityInfo.item.longitude}&units=metric&lang=pt_br&appid=${API_KEY}`).then(js => js.json()).then(res => {
                 var array7Days = [];
 
                 for(var x = 0; x < res.list.length; x+=8) {

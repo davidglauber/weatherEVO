@@ -1,11 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity, FlatList } from 'react-native'
+import React from 'react'
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native'
 import { Feather } from '@expo/vector-icons';
 import ForeCastCity from '../../components/molecules/ForeCastCity';
 
 
-const { width, height } = Dimensions.get("screen");
+const { width } = Dimensions.get("screen");
 //I'm using Dimensions instead useWindowDimensions hook because I need to call these screen propeties outside a functional component
 
 export default function City({navigation, route}: any) {

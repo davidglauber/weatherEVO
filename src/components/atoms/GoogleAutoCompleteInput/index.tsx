@@ -7,18 +7,12 @@ import { DataContext } from '../../../stores/providers';
 const { width, height } = Dimensions.get("screen");
 //I'm using Dimensions instead useWindowDimensions hook because I need to call these screen propeties outside a functional component
 
+import { API_KEY } from "@env"
+//It is importing the apiKey
+
 export default function GoogleAutoCompleteInput(props: any) {
     const [ cities, setCities ] = useState<any | undefined>([]);
     const { globalArrayCities, setGlobalArrayCities } = React.useContext(DataContext);
-
-    useEffect(() => {
-        if(cities.length >= 15) {
-            alert('Você só pode adicionar até 5 locais por vez')
-        } else {
-            return undefined;
-        }
-    }, [cities])
-
     
     function handleSaveCities() {
         setGlobalArrayCities([...globalArrayCities, ...cities])
@@ -50,7 +44,7 @@ export default function GoogleAutoCompleteInput(props: any) {
                         }
                     }}
                     onPress={(data, details = null) => {
-                        fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${details?.geometry.location.lat}&lon=${details?.geometry.location.lng}&units=metric&lang=pt_br&appid=bdc4cc287ad8459dd3d505378c906116`).then(js => js.json()).then(res => {
+                        fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${details?.geometry.location.lat}&lon=${details?.geometry.location.lng}&units=metric&lang=pt_br&appid=${API_KEY}`).then(js => js.json()).then(res => {
                         setCities([...cities, {
                             id: data.place_id,
                             city: details?.address_components[1].long_name || details?.address_components[0].long_name, //Usually, the position 0 and 1 has the same city, so I did it as a precaution
