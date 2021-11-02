@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Home from '../screens/Home';
 import Search from '../screens/Search';
+import City from '../screens/City';
 //screens on navigation
 
 
@@ -12,10 +13,12 @@ const Stack = createNativeStackNavigator();
 
 export function Navigator() {
     return(
+
         <NavigationContainer>
             <Stack.Navigator initialRouteName="Home">
                 <Stack.Screen name="Home" component={Home} options={{headerShown:false}}/>
                 <Stack.Screen name="Search" component={Search} options={{headerShown:false}}/>
+                <Stack.Screen name="City" component={City} options={{headerShown:false}}/>
             </Stack.Navigator>
         </NavigationContainer>
     );
