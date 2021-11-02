@@ -23,8 +23,21 @@ export default function City({navigation, route}: any) {
                 console.log('\n\n\nCITY PARAMS: ' + JSON.stringify(weeklyWeather))
             })
         }
+
+        //I'm not using daily API because it's paid
         fetchAPI();
     },[])
+
+    function convertUnixUTCToDate(UNIX_timestamp: number) {
+        var a = new Date(UNIX_timestamp * 1000);
+        var months = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+        var year = a.getFullYear();
+        var month = months[a.getMonth()];
+        var date = a.getDate();
+        var time = date + ' ' + month + ' ' + year;
+
+        return time;
+    }
 
     return (
         <View style={styles.container}>
@@ -38,13 +51,13 @@ export default function City({navigation, route}: any) {
 
             <FlatList 
                 data={weeklyWeather}
-                keyExtractor={item => item.id}
+                keyExtractor={item => item.dt}
                 renderItem={(item: any) => (
                     <View style={styles.citiesWeather}>
                         <View style={{flex:1, flexDirection:'row'}}>
                             <View style={{flex:1, flexDirection:'column'}}>
                                 <Text style={{color:'black', fontSize:24, fontWeight:"bold", position:"absolute", left: width/13}}>Hoje</Text>
-                                <Text style={{color:'black', fontSize:14, position:'absolute', left: width/13, top: height/28}}>5 de Julho</Text>
+                                <Text style={{color:'black', fontSize:14, position:'absolute', left: width/13, top: height/28}}>{convertUnixUTCToDate(item.item.dt)}</Text>
                                 <Text style={{position:'absolute', left: width/13, top: height/11, color:'#5772FF', textTransform: "capitalize"}}>{item.item.weather[0].description}</Text>
                                 
                                 <View style={{flexDirection:"row"}}>
