@@ -74,7 +74,6 @@ export default function Search({navigation}: any) {
                             favorite: false
                         }])
                     })
-                        console.log(JSON.stringify(cities));
                     }}
                     query={{
                         key: 'AIzaSyApBdPKSS-jOkBatAwVUspBMJ6aTmYogBA',
@@ -94,9 +93,6 @@ export default function Search({navigation}: any) {
                     <View style={styles.searchedCities} key={item.id}>
                         <Text style={{color:'white', fontWeight:'bold', fontSize:15}}>{item.city}, </Text>
                         <Text style={{color:'white', fontSize:15}}>{item.stateOfCity}</Text>
-                        <TouchableOpacity style={{position:"absolute", right: width/18}}>
-                            <Feather style={{color:"white"}} name="trash-2" size={20}/>
-                        </TouchableOpacity>
                     </View>
                 ))}
             </View>
