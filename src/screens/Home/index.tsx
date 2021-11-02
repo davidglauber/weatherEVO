@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity, FlatList } from 'react-native'
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity, FlatList, Touchable } from 'react-native'
 import { Feather } from '@expo/vector-icons';
 import LottieView from 'lottie-react-native';
 import notFound from '../../components/atoms/LottieAnimations/notfound.json';
@@ -13,10 +13,28 @@ const { width, height } = Dimensions.get("screen");
 
 export default function Home({navigation}: any) {
     const { globalArrayCities, setGlobalArrayCities } = React.useContext(DataContext);
+    const [ refreshPage, setRefreshPage ] = useState(false);
 
     useEffect(() => {
-        console.log('WEATHEEEEEEEERR: '+ JSON.stringify(globalArrayCities?.weather))
+        console.log('WEATHEEEEEEEERR: '+ JSON.stringify(globalArrayCities))
     }, [])
+    
+    
+    Array.prototype.move = function(from: any, to: any){
+        this.splice(to,0,this.splice(from,1)[0]);
+        return this;
+    };
+    //This function changes the currentValue (from) to the another position in array, in this case I want to set every city that has favorite as true to the 0 position
+
+    function reload(indexCurrentElement: number, favoriteStatus: boolean) {
+        if(favoriteStatus == false) {
+            globalArrayCities.move(indexCurrentElement, 0)
+            setRefreshPage(!refreshPage)
+        } else {
+            setRefreshPage(!refreshPage)
+        }
+    }
+
 
     return (
         <View style={styles.container}>
@@ -44,7 +62,13 @@ export default function Home({navigation}: any) {
                                     <Text style={{position:'absolute', left: width/13, top: height/11, color:'#5772FF', textTransform: "capitalize"}}>{item.item.weather.weather[0].description}</Text>
                                     <View style={{flexDirection:"row"}}>
                                         <Text style={{position:'absolute', left: width/13, top: height/9, color:'black'}}>{item.item.weather.main.temp_min}° - {item.item.weather.main.temp_max}°</Text>
-                                        <Feather style={{position:'absolute', right: width/12, top: height/9.9}} name="star" size={24}/>
+                                        <TouchableOpacity style={{flex:1, position:'absolute', right: width/12, top: height/9.9}} onPress={() => [reload(globalArrayCities.indexOf(item.item), item.item.favorite), item.item.favorite = !item.item.favorite]}>
+                                            {item.item.favorite == false ?
+                                                <Feather style={{color: "black"}} name="star" size={24}/>
+                                                :
+                                                <Feather style={{color: "#e3c007"}} name="star" size={24}/>
+                                            }
+                                        </TouchableOpacity>
                                     </View>
                                 </View>
                                 <Text style={styles.temperature}>{Math.round((item.item.weather.main.temp))}°</Text>
