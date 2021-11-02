@@ -16,17 +16,27 @@ export default function City({navigation, route}: any) {
         const { cityInfo } = route.params;
         //This constant get all the city information
         async function fetchAPI() {
-            await fetch(`http://api.openweathermap.org/data/2.5/forecast?lat=${cityInfo.item.latitude}&lon=${cityInfo.item.longitude}&units=metric&lang=pt_br&cnt=7&appid=bdc4cc287ad8459dd3d505378c906116`).then(js => js.json()).then(res => {
+            await fetch(`http://api.openweathermap.org/data/2.5/forecast?lat=${cityInfo.item.latitude}&lon=${cityInfo.item.longitude}&units=metric&lang=pt_br&appid=bdc4cc287ad8459dd3d505378c906116`).then(js => js.json()).then(res => {
+                var array7Days = [];
                 console.log('\n\n\nGET FORECAST: ' + JSON.stringify(res))
-    
-                setWeeklyWeather(res.list)
-                console.log('\n\n\nCITY PARAMS: ' + JSON.stringify(weeklyWeather))
+                
+
+                for(var x = 0; x < res.list.length; x+=8) {
+                    array7Days.push(res.list[x])
+
+                    setWeeklyWeather(array7Days)
+
+                    console.log('VALOR DO ARRAY DO FOR: ' + JSON.stringify(array7Days))
+                    console.log('VALOR DO FORRRRR: ' + x)
+                    console.log('\n\n\nCITY PARAMS: ' + JSON.stringify(res.list[x]))
+                }
             })
         }
 
         //I'm not using daily API because it's paid
         fetchAPI();
     },[])
+
 
     function convertUnixUTCToDate(UNIX_timestamp: number) {
         var a = new Date(UNIX_timestamp * 1000);
@@ -39,20 +49,46 @@ export default function City({navigation, route}: any) {
         return time;
     }
 
-    function convertUnixUTCToHour(UNIX_timestamp: number) {
-        var a = new Date(UNIX_timestamp * 1000);
-        var hour = a.getHours();
-        var min = a.getMinutes();
-        var time = hour + ':' + min + 'hrs';
 
-        return time;
+    function resposiveDays(dayParam: any) {
+        //This function changes the days, if today is day 2 the function will show the message Today
+       
+        var a = new Date(dayParam * 1000);
+        var date = Number(a.getDate());
+        //Day from timestamp
+
+        var today = new Date();
+        var day = Number(today.getDate());
+        //Current day
+
+        if(date == day) {
+            return (
+                <View>
+                    <Text style={{color:'black', fontSize:24, fontWeight:"bold", position:"absolute", left: width/13}}>Hoje</Text>
+                    <Text style={{color:'black', fontSize:14, position:'absolute', left: width/13, top: height/28}}>{convertUnixUTCToDate(dayParam)}</Text>
+                </View>
+            );
+        } else if(date > day && date - day == 1) {
+            return (
+                <View>
+                    <Text style={{color:'black', fontSize:24, fontWeight:"bold", position:"absolute", left: width/13}}>Amanhã</Text>
+                    <Text style={{color:'black', fontSize:14, position:'absolute', left: width/13, top: height/28}}>{convertUnixUTCToDate(dayParam)}</Text>
+                </View>
+            );
+        } else {
+            return (
+                <View>
+                    <Text style={{color:'black', fontSize:24, fontWeight:"bold", position:"absolute", left: width/13}}>{convertUnixUTCToDate(dayParam)}</Text>
+                </View>
+            );
+        }
     }
 
     return (
         <View style={styles.container}>
             <TouchableOpacity style={styles.header} onPress={() => navigation.goBack()}>
                 <Feather name="chevron-left" size={20} style={styles.iconArrow}/>
-                <Text style={styles.city}>Previsão para os próximos 7 dias</Text>
+                <Text style={styles.city}>Previsão para os próximos 5 dias</Text>
             </TouchableOpacity>
 
             <Text style={styles.cityTitle}>{route.params.stateCity}</Text>
@@ -65,8 +101,7 @@ export default function City({navigation, route}: any) {
                     <View style={styles.citiesWeather}>
                         <View style={{flex:1, flexDirection:'row'}}>
                             <View style={{flex:1, flexDirection:'column'}}>
-                                <Text style={{color:'black', fontSize:24, fontWeight:"bold", position:"absolute", left: width/13}}>{convertUnixUTCToDate(item.item.dt)}</Text>
-                                <Text style={{color:'black', fontSize:14, position:'absolute', left: width/13, top: height/28}}>{convertUnixUTCToHour(item.item.dt)}</Text>
+                                {resposiveDays(item.item.dt)}
                                 <Text style={{position:'absolute', left: width/13, top: height/11, color:'#5772FF', textTransform: "capitalize"}}>{item.item.weather[0].description}</Text>
                                 
                                 <View style={{flexDirection:"row"}}>
