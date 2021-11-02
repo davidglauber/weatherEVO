@@ -39,6 +39,15 @@ export default function City({navigation, route}: any) {
         return time;
     }
 
+    function convertUnixUTCToHour(UNIX_timestamp: number) {
+        var a = new Date(UNIX_timestamp * 1000);
+        var hour = a.getHours();
+        var min = a.getMinutes();
+        var time = hour + ':' + min + 'hrs';
+
+        return time;
+    }
+
     return (
         <View style={styles.container}>
             <TouchableOpacity style={styles.header} onPress={() => navigation.goBack()}>
@@ -56,8 +65,8 @@ export default function City({navigation, route}: any) {
                     <View style={styles.citiesWeather}>
                         <View style={{flex:1, flexDirection:'row'}}>
                             <View style={{flex:1, flexDirection:'column'}}>
-                                <Text style={{color:'black', fontSize:24, fontWeight:"bold", position:"absolute", left: width/13}}>Hoje</Text>
-                                <Text style={{color:'black', fontSize:14, position:'absolute', left: width/13, top: height/28}}>{convertUnixUTCToDate(item.item.dt)}</Text>
+                                <Text style={{color:'black', fontSize:24, fontWeight:"bold", position:"absolute", left: width/13}}>{convertUnixUTCToDate(item.item.dt)}</Text>
+                                <Text style={{color:'black', fontSize:14, position:'absolute', left: width/13, top: height/28}}>{convertUnixUTCToHour(item.item.dt)}</Text>
                                 <Text style={{position:'absolute', left: width/13, top: height/11, color:'#5772FF', textTransform: "capitalize"}}>{item.item.weather[0].description}</Text>
                                 
                                 <View style={{flexDirection:"row"}}>
