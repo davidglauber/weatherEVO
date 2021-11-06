@@ -7,7 +7,7 @@ import { DataContext } from '../../../stores/providers';
 const { width, height } = Dimensions.get("screen");
 //I'm using Dimensions instead useWindowDimensions hook because I need to call these screen propeties outside a functional component
 
-import { API_KEY } from "@env"
+import { API_KEY, GOOGLE_KEY } from "@env"
 //It is importing the apiKey
 
 export default function GoogleAutoCompleteInput(props: any) {
@@ -57,7 +57,7 @@ export default function GoogleAutoCompleteInput(props: any) {
                     })
                     }}
                     query={{
-                        key: 'AIzaSyApBdPKSS-jOkBatAwVUspBMJ6aTmYogBA',
+                        key: GOOGLE_KEY,
                         language: 'pt-BR',
                     }}
                     fetchDetails={true}
