@@ -1,15 +1,16 @@
 import LottieView from 'lottie-react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dimensions, FlatList, Text, TouchableOpacity, View, StyleSheet } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import notFound from '../../../components/atoms/LottieAnimations/notfound.json';
+import { API_KEY } from "@env";
 
 const { width, height } = Dimensions.get("screen");
 
 export default function ListCities(props: any) {
     const list = props.citiesContext;
     const [ refreshPage, setRefreshPage ] = useState(false);
-
+    const [ reloadWeather, setReloadWeather ] = useState(false);
 
     Array.prototype.move = function(from: any, to: any){
         this.splice(to,0,this.splice(from,1)[0]);
@@ -31,6 +32,22 @@ export default function ListCities(props: any) {
         list.splice(indexCurrentElement, 1)
         setRefreshPage(!refreshPage)
     }
+
+    useEffect(() => {
+        function updateWeather() {
+            setInterval(() => {
+                props.citiesContext?.map((item: any) => {
+                    fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${item.weather.coord.lat}&lon=${item.weather.coord.lon}&units=metric&lang=pt_br&appid=${API_KEY}`).then(js => js.json()).then(res => {
+                        item.weather = res
+                        setReloadWeather(!reloadWeather)
+                    })
+                })
+            }, 60000)
+        }
+
+        updateWeather();
+        //This function gets the newer weather of the current local from API every minute
+    }, [reloadWeather, []])
 
     return(
         <View>
